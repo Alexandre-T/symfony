@@ -54,7 +54,7 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
     }
 
     /**
-     * Checks if the given class has any get{Property} method.
+     * Checks if the given class has any get|is|has{Property} method or any public {Property} property.
      *
      * @param string $class
      *
@@ -70,7 +70,7 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
             }
         }
 
-        return false;
+        return !empty($class->getProperties(\ReflectionMethod::IS_PUBLIC));
     }
 
     /**

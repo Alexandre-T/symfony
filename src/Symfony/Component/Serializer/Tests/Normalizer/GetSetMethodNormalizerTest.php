@@ -564,6 +564,20 @@ class GetSetMethodNormalizerTest extends TestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    public function testNoGetterButPublicPropertyDummySupport()
+    {
+        $this->assertTrue($this->normalizer->supportsNormalization(new ObjectWithoutGetterButPublicPropertyDummy()));
+    }
+
+    public function testDenormalizeWithObjectWithoutGetterButPublicPropertyDummy()
+    {
+        $data = new ObjectWithoutGetterButPublicPropertyDummy();
+        $data->setFoo('foo');
+        $obj = $this->normalizer->denormalize($data, ObjectWithoutGetterButPublicPropertyDummy::class, 'any');
+        $this->assertEquals('foo', $obj->foo);
+        $this->assertEquals('bar', $obj->bar);
+    }
 }
 
 class GetSetDummy
@@ -811,5 +825,21 @@ class ObjectWithHasGetterDummy
     public function hasFoo()
     {
         return $this->foo;
+    }
+}
+
+class ObjectWithoutGetterButPublicPropertyDummy
+{
+    public $foo;
+    public $bar = 'bar';
+
+    public function setFoo($foo)
+    {
+        $this->foo = $foo;
+    }
+
+    public function setBar($bar)
+    {
+        $this->bar = $bar;
     }
 }
